@@ -65,18 +65,22 @@ function App(): JSX.Element {
   };
 
   function fetchCountry() {
-    fetch(
-      `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=183daca270264bad86fc5b72972fb82a`,
-    )
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        setData(data.articles);
-      })
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-      });
+    try {
+      fetch(
+        `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=183daca270264bad86fc5b72972fb82a`,
+      )
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          setData(data.articles);
+        })
+        .catch(function (err) {
+          console.log('Fetch Error :-S', err);
+        });
+    } catch (e) {
+      throw e;
+    }
   }
 
   return (
@@ -102,7 +106,7 @@ function App(): JSX.Element {
           <FlatList
             data={data}
             renderItem={({item}) => <Item title={item.title} />}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.source.id}
           />
         </View>
       </ScrollView>
